@@ -7,14 +7,9 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error
 import matplotlib.pyplot as plt
 
-# ------------------------
-# Page Configuration
-# ------------------------
+
 st.set_page_config(page_title="Hospital Cost and Efficiency AI", layout="wide")
 
-# ------------------------
-# Indigo → Silverish Slanted Gradient CSS
-# ------------------------
 st.markdown(
     """
     <style>
@@ -43,14 +38,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ------------------------
-# Title
-# ------------------------
+
 st.title("AI-Based Hospital Cost and Efficiency predictor")
 
-# ------------------------
-# Load Dataset
-# ------------------------
 data_file = "Inpatient_Pat.csv"
 
 try:
@@ -61,15 +51,11 @@ except FileNotFoundError:
 
 df.columns = df.columns.str.strip()
 
-# ------------------------
-# Dataset Preview
-# ------------------------
+
 st.subheader("Dataset Preview")
 st.dataframe(df.head())
 
-# ------------------------
-# Target Selection
-# ------------------------
+
 st.subheader("Select Prediction Target")
 
 target = st.selectbox(
@@ -81,9 +67,7 @@ target = st.selectbox(
     ]
 )
 
-# ------------------------
-# Data Preparation
-# ------------------------
+
 df_ml = df.copy()
 
 le = LabelEncoder()
@@ -96,15 +80,10 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# ------------------------
-# Train Model (Silent)
-# ------------------------
+
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# ------------------------
-# Cost Prediction
-# ------------------------
 st.subheader("Treatment Cost Prediction")
 
 user_input = []
@@ -116,9 +95,6 @@ if st.button("Predict Cost"):
     prediction = model.predict([user_input])
     st.success(f"Predicted Cost: {round(prediction[0], 2)}")
 
-# ------------------------
-# DRG-Based Cost Analysis
-# ------------------------
 st.subheader("DRG-Based Cost Analysis")
 
 top_drg = (
@@ -135,9 +111,6 @@ ax1.set_ylabel("Average Cost")
 ax1.set_title("Top 10 High-Cost DRGs")
 st.pyplot(fig1)
 
-# ------------------------
-# Hospital Efficiency Dashboard
-# ------------------------
 st.subheader("Hospital Efficiency Dashboard")
 
 fig2, ax2 = plt.subplots()
@@ -147,9 +120,6 @@ ax2.set_ylabel(target)
 ax2.set_title("Discharge Volume vs Cost")
 st.pyplot(fig2)
 
-# ------------------------
-# Insights
-# ------------------------
 st.subheader("Key Insights")
 
 st.write(
@@ -157,3 +127,4 @@ st.write(
     "- High discharge volume with low payments may indicate underfunding.\n"
     "- Predictive cost modeling supports effective hospital resource planning."
 )
+
